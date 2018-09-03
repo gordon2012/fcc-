@@ -1,21 +1,13 @@
+const w = 800;
+const h = 600;
+const padding = 50;
+
 var req = new XMLHttpRequest();
 req.open('GET', 'GDP-data.json', true);
 req.send();
 req.onload = function() {
     const dataset = JSON.parse(req.responseText);
     const data = dataset.data;
-
-    // console.log(data);
-
-    const xdata = data.map(function(d) {
-        return Number(d[0].slice(0,4));
-    });
-    // console.log();
-
-
-    const w = 800;
-    const h = 600;
-    const padding = 50;
 
     const svg = d3.select('body')
         .append('svg')
@@ -24,7 +16,7 @@ req.onload = function() {
 
     // x axis
     const xScale = d3.scaleLinear()
-        .domain([d3.min(xdata, d => d), d3.max(xdata, d => d)])
+        .domain([d3.min(data, d => d[0].slice(0,4)), d3.max(data, d => d[0].slice(0,4))])
         .range([padding, w - padding]);
     const xAxis = d3.axisBottom(xScale).tickFormat(d3.format('d'));
     svg.append('g')
@@ -42,16 +34,7 @@ req.onload = function() {
         .attr('id', 'y-axis')
         .call(yAxis);
 
-
-
-
     // The bars
-
-    // const ydata = data.map(e => e[1]);
-    // console.log(ydata.length);
-
-    // console.log(data);
-
     svg.selectAll('rect')
         .data(data)
         .enter()
@@ -64,39 +47,29 @@ req.onload = function() {
             .attr('data-date', d => d[0])
             .attr('data-gdp', d => d[1])
             .attr('title', d => `Date: ${d[0]}, GDP: ${d[1]}`)
-
-
-    // svg.selectAll('rect')
-    //     .data(d)
-
 }
 
+// Tooltip
 document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('body').addEventListener('mouseover', event => {
-        // console.log('event');
         if(event.target.classList.contains('bar')) {
-            // console.log('mouseover .bar');
-
             const data = event.target.dataset;
 
-            // console.log(event.target.dataset);
-
-
             const tooltip = document.getElementById('tooltip');
-            tooltip.style.display = 'inherit';
             tooltip.dataset.date = data.date;
-            tooltip.innerHTML = `${data.date}<br>GDP: ${data.gdp}`;
 
+            tooltip.style.opacity = 1;
+            tooltip.style.left = `${event.x + ((w - 160 - 20 - event.x) > 0 ? 20 : -180)}px`;
+
+            tooltip.querySelector('.tooltip-date').innerHTML = `${data.date.slice(0,4)} Q${Math.floor((Number(data.date.slice(5,7))-1)/3)+1}`;
+            tooltip.querySelector('.tooltip-gdp').innerHTML = `$${Number(data.gdp).toLocaleString('en')}B`;
         }
     });
 
     document.querySelector('body').addEventListener('mouseout', event => {
-        // console.log('event');
         if(event.target.classList.contains('bar')) {
-            console.log('mouseout .bar');
-
-            document.getElementById('tooltip').style.display = 'none';
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.opacity = 0;
         }
     });
-
 });

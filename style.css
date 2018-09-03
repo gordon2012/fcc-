@@ -1,3 +1,38 @@
+#title {
+    text-align: center;
+}
+
+.bar {
+    fill: red;
+}
+.bar:hover {
+    fill: blue;
+}
+
 #tooltip {
-    display: none;
+    opacity: 0;
+    pointer-events: none;
+    width: 160px;
+    height: 120px;
+    background: white;
+    box-shadow: 4px 4px 16px 0px rgba(0,0,0,0.75);
+    position: absolute;
+    bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    font-family: Lato, Helvetica, "sans-serif";
+}
+
+#tooltip .tooltip-date {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+#tooltip .tooltip-gdp {
+    flex: 1;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
 }
