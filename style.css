@@ -34,14 +34,14 @@ svg {
 }
 
 .bar {
-    fill: red;
+    /* fill: red; */
 }
 .bar:hover {
     fill: blue;
 }
 
 #tooltip {
-    opacity: 0;
+    /* opacity: 0; */
     pointer-events: none;
     width: 160px;
     height: 120px;
@@ -52,16 +52,20 @@ svg {
     flex-direction: column;
 }
 
-#tooltip .tooltip-date {
+#tooltip * {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+#tooltip .tooltip-date {
     font-size: 18px;
 }
 #tooltip .tooltip-gdp {
-    flex: 1;
-    text-align: center;
     font-size: 16px;
     font-weight: bold;
+}
+#tooltip .tooltip-growth {
+    font-size: 14px;
+    font-style: italic;
 }
