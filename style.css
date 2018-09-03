@@ -1,5 +1,36 @@
+* {
+    box-sizing: border-box;
+}
+
+.card {
+    box-shadow: 4px 4px 16px 0px rgba(0,0,0,0.75);
+}
+
+#tooltip, #title {
+    font-family: Lato, Helvetica, "sans-serif";
+}
+
+body {
+    border: 1px solid transparent;
+    background: #dbdbdb;
+    margin: 0;
+    min-height: 100vh;
+}
+
+.svg-wrap {
+    display: flex;
+    position: relative;
+    padding: 0 30px;
+}
+
+svg {
+    background: whitesmoke;
+    margin: 0 auto;
+}
+
 #title {
     text-align: center;
+    margin: 45px 0;
 }
 
 .bar {
@@ -15,12 +46,10 @@
     width: 160px;
     height: 120px;
     background: white;
-    box-shadow: 4px 4px 16px 0px rgba(0,0,0,0.75);
     position: absolute;
     bottom: 100px;
     display: flex;
     flex-direction: column;
-    font-family: Lato, Helvetica, "sans-serif";
 }
 
 #tooltip .tooltip-date {

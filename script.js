@@ -9,8 +9,9 @@ req.onload = function() {
     const dataset = JSON.parse(req.responseText);
     const data = dataset.data;
 
-    const svg = d3.select('body')
+    const svg = d3.select('.svg-wrap')
         .append('svg')
+        .attr('class', 'card')
         .attr('width', w)
         .attr('height', h);
 
@@ -18,7 +19,8 @@ req.onload = function() {
     const xScale = d3.scaleLinear()
         .domain([d3.min(data, d => d[0].slice(0,4)), d3.max(data, d => d[0].slice(0,4))])
         .range([padding, w - padding]);
-    const xAxis = d3.axisBottom(xScale).tickFormat(d3.format('d'));
+    const xAxis = d3.axisBottom(xScale)
+        .tickFormat(d3.format('d'));
     svg.append('g')
         .attr('transform', `translate(0, ${h - padding})`)
         .attr('id', 'x-axis')
