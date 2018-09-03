@@ -1,29 +1,54 @@
-const w = 800;
-const h = 600;
-const padding = 50;
+const maxW = 800;
+const maxH = 600;
 
-var req = new XMLHttpRequest();
-req.open('GET', 'GDP-data.json', true);
-req.send();
-req.onload = function() {
-    const dataset = JSON.parse(req.responseText);
+const maxPadding = 50;
+const minPadding = 25;
+const wrapPadding = 15;
 
-    const data = dataset.data.map((d,i,a) => {
-        if(i > 0) {
-            const curr = Number(d[1]);
-            const prev = Number(a[i-1][1]);
-            const delta = curr - prev;
+let w = maxW;
+let h = maxH;
+let padding = maxPadding;
 
-            d.push(delta);
-            d.push((delta / prev) * 100);
-        } else {
-            d.push(0);
-            d.push(0);
+function debounce(func, wait, immediate) {
+    var timeout;
+    return function() {
+        var context = this, args = arguments;
+        var later = function() {
+            timeout = null;
+            if(!immediate) {
+                func.apply(context, args);
+            }
         }
-        return d;
-    });
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if(callNow) {
+            func.apply(context, args);
+        }
+    };
+};
 
-    const svg = d3.select('.svg-wrap')
+var resize = debounce(function () {
+    const title = document.getElementById('title');
+    const titleStyle = getComputedStyle(title);
+    const titleHeight = title.offsetHeight + parseInt(titleStyle.marginTop) + parseInt(titleStyle.marginBottom);
+
+    if(window.innerWidth < 900) {
+        w = window.innerWidth - (wrapPadding * 2);
+        h = window.innerHeight - titleHeight - (wrapPadding * 2) - 5;
+        padding = minPadding;
+    } else {
+        w = maxW;
+        h = maxH;
+        padding = maxPadding;
+    }
+
+    drawChart();
+}, 100);
+
+const drawChart = () => {
+    const svg = d3.select('.svg-target')
+        .html('')
         .append('svg')
         .attr('class', 'card')
         .attr('width', w)
@@ -54,7 +79,6 @@ req.onload = function() {
     const cScale = d3.scaleLinear()
         .domain([d3.min(data, d => d[2]), d3.max(data, d => d[2])])
         .range([0, 255]);
-    console.log(cScale(-1));
 
     // Bar shapes
     svg.selectAll('rect')
@@ -70,11 +94,38 @@ req.onload = function() {
             .attr('data-date', d => d[0])
             .attr('data-gdp', d => d[1])
             .attr('data-growth', d => d[3])
-            .attr('title', d => `Date: ${d[0]}, GDP: ${d[1]}`)
+            .attr('title', d => `Date: ${d[0]}, GDP: ${d[1]}`);
+};
+
+let data;
+const req = new XMLHttpRequest();
+req.open('GET', 'GDP-data.json', true);
+req.send();
+req.onload = function() {
+    const dataset = JSON.parse(req.responseText);
+
+    data = dataset.data.map((d,i,a) => {
+        if(i > 0) {
+            const curr = Number(d[1]);
+            const prev = Number(a[i-1][1]);
+            const delta = curr - prev;
+
+            d.push(delta);
+            d.push((delta / prev) * 100);
+        } else {
+            d.push(0);
+            d.push(0);
+        }
+        return d;
+    });
+
+    resize();
 }
 
-// Tooltip
 document.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('resize', resize);
+
+    // Tooltip
     document.querySelector('body').addEventListener('mouseover', event => {
         if(event.target.classList.contains('bar')) {
             const data = event.target.dataset;

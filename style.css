@@ -18,11 +18,13 @@ body {
 }
 
 .svg-wrap {
-    display: flex;
+    padding: 15px;
     position: relative;
-    padding: 0 30px;
+    overflow: hidden;
 }
-
+.svg-target {
+    display: flex;
+}
 svg {
     background: whitesmoke;
     margin: 0 auto;
