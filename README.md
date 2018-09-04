@@ -6,4 +6,4 @@
 
 <http://barchart.gordonscampinggear.com/>
 
-![Bar Chart](http://gordonscampinggear.com/img/barchart.png)
+![Bar Chart](http://gordonscampinggear.com/img/barchart.png "United States GDP")
