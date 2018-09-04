@@ -1,3 +1,9 @@
 # Bar Chart
 
-## freeCodeCamp: Data Visualization Projects - Visualize Data with a Bar Chart
+## United States GDP
+
+### A freeCodeCamp Data Visualization Project
+
+<http://barchart.gordonscampinggear.com/>
+
+![Bar Chart](http://gordonscampinggear.com/img/barchart.png)
