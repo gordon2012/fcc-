@@ -4,6 +4,6 @@
 
 ### A freeCodeCamp Data Visualization Project
 
-<http://barchart.gordonscampinggear.com/>
+<https://barchart.gordonscampinggear.com/>
 
-![Bar Chart](http://gordonscampinggear.com/img/barchart.png "United States GDP")
+![Bar Chart](https://gordonscampinggear.com/img/barchart.png "United States GDP")
